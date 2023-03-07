@@ -1,0 +1,6 @@
+select*from products;
+select*from orderdetails;
+select*from customers;
+select*from payments;
+select*from employees;
+select*from offices;
