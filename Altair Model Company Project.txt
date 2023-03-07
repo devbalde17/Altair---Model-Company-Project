@@ -4,3 +4,22 @@ select*from customers;
 select*from payments;
 select*from employees;
 select*from offices;
+
+
+
+// starts here //
+
+
+// works//
+select od.quantityordered, p.productline
+from products p 
+join orderdetails od on od.ordernumber=ordernumber;
+
+*Shows the results to the field productline on the table products joined by the field on quantityordered from the orderdetails table*
+
+// in progress //
+
+select od.quantityordered, p.productline, o.orderdate
+from products p 
+join orderdetails od on od.ordernumber=ordernumber
+join orders as o on o.ordernumber=orderNumber;
