@@ -6,6 +6,19 @@ select*from employees;
 select*from offices;
 
 
+General Select code
+
+SELECT DISTINCT column_name, AGG_FUNC(column_or_expression), …
+FROM mytable
+    JOIN another_table
+      ON mytable.column = another_table.column
+    WHERE constraint_expression
+    GROUP BY column
+    HAVING constraint_expression
+    ORDER BY column ASC/DESC
+    LIMIT count OFFSET COUNT;
+
+
 
 // starts here //
 
@@ -23,3 +36,15 @@ select od.quantityordered, p.productline, o.orderdate
 from products p 
 join orderdetails od on od.ordernumber=ordernumber
 join orders as o on o.ordernumber=orderNumber;
+
+/* human resources */
+
+SELECT c.salesRepEmployeeNumber, sum()
+FROM customers c
+    JOIN payments p
+      ON c.customernumber = p.customernumber
+    WHERE constraint_expression
+    GROUP BY "seller"
+    ORDER BY sum(turnover) ASC/DESC
+    LIMIT 2;
+   
