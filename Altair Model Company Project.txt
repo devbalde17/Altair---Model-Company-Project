@@ -37,14 +37,15 @@ from products p
 join orderdetails od on od.ordernumber=ordernumber
 join orders as o on o.ordernumber=orderNumber;
 
-/* human resources */
+/* human resources topic */
 
-SELECT c.salesRepEmployeeNumber, sum()
+SELECT month(p.paymentdate), concat(e.firstName, ' ', e.lastname) as full_employee_name, sum(p.amount) as turnover
 FROM customers c
     JOIN payments p
-      ON c.customernumber = p.customernumber
-    WHERE constraint_expression
-    GROUP BY "seller"
-    ORDER BY sum(turnover) ASC/DESC
-    LIMIT 2;
+		ON c.customernumber = p.customernumber
+	Join employees e
+		ON c.salesRepEmployeeNumber = e.employeeNumber
+    GROUP BY month(p.paymentdate), c.salesRepEmployeeNumber
+    ORDER BY month(p.paymentdate) Desc, sum(p.amount) desc
+    limit 2;
    
