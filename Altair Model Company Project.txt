@@ -25,16 +25,14 @@ FROM mytable
 
 /*Sales topic:*/
 
-SELECT Month(o.orderdate), p.productLine, sum(od.quantityOrdered) as total_ordered  /*  selects the month, category and total quantity ordered columns */
-FROM orderdetails od /* from orderdetails table as main table */
-    JOIN products p  /* joining with product table as foreign */
-      ON od.productcode = p.productcode /* columns in common between both tables */
+SELECT year(o.orderdate), Month(o.orderdate), p.productLine, sum(od.quantityOrdered) as total_ordered
+FROM orderdetails od 
+    JOIN products p  
+      ON od.productcode = p.productcode 
 	JOIN orders o
       ON od.ordernumber = o.ordernumber
-    GROUP BY Month(o.orderdate), p.productLine /* grouping by month and category */
-    ORDER BY month(o.orderdate) asc, sum(od.quantityOrdered) DESC; /* ordering the results to show up by each month from higher to lowest in quantity */
-    
-    /* i think we are missing subquery's throught the project*/
+    GROUP BY year(o.orderdate), Month(o.orderdate), p.productLine 
+    ORDER BY year(o.orderdate) asc, month(o.orderdate) asc, sum(od.quantityOrdered) DESC;
     
     
 /*Financial Topic
