@@ -35,6 +35,19 @@ FROM orderdetails od
     ORDER BY year(o.orderdate) asc, month(o.orderdate) asc, sum(od.quantityOrdered) DESC;
     
     
+    not finished
+    
+    SELECT year(orderdate), Month(o.orderdate), p.productLine, sum(od.quantityOrdered),
+LAG(sum(od.quantityOrdered)) over (order by year(orderdate), month(orderdate))
+FROM orderdetails od 
+    left JOIN products p  
+      ON od.productcode = p.productcode 
+	left JOIN orders o
+      ON od.ordernumber = o.ordernumber
+    GROUP BY year(o.orderdate), Month(o.orderdate), p.productLine
+    ORDER BY year(o.orderdate) asc, month(o.orderdate) asc;
+    
+    
 /*Financial Topic
 
 -monthly turnover by country*/
