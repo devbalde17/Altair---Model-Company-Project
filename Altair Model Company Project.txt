@@ -79,6 +79,10 @@ FROM orderdetails od
 
 /* human resources topic */
 
+
+NEED TO CHANGE THE TURNOVER
+
+
 SELECT monthname(p.paymentdate), concat(e.firstName, ' ', e.lastname) as full_employee_name, sum(p.amount) as turnover
 FROM customers c
     JOIN payments p
