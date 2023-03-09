@@ -21,7 +21,7 @@ FROM mytable
 
 
 // starts here //
-
+/* i think we are missing subquery's throught the project. we gotta learn that*/
 
 /*Sales topic:*/
 
@@ -34,10 +34,10 @@ FROM orderdetails od /* from orderdetails table as main table */
     GROUP BY Month(o.orderdate), p.productLine /* grouping by month and category */
     ORDER BY month(o.orderdate) asc, sum(od.quantityOrdered) DESC; /* ordering the results to show up by each month from higher to lowest in quantity */
     
-    /* i think we are missing subquery's throught the project, we now need to tell SQL to compare with previous year */
+    /* i think we are missing subquery's throught the project*/
     
     
-*/Financial Topic
+/*Financial Topic
 
 -monthly turnover by country*/
 
@@ -52,6 +52,19 @@ FROM customers c
     ORDER BY month(p.paymentdate), c.country asc;
     
     /*missing the rest of the question*/
+    
+/*Logistics topic*/
+
+SELECT p.productName, sum(od.quantityOrdered) as Total_ordered
+FROM orderdetails od
+    JOIN products p
+      ON od.productcode = p.productcode
+    GROUP BY p.productCode
+    ORDER BY sum(od.quantityOrdered) DESC
+    LIMIT 5;
+    
+    
+/* top 5 ordered products, missing the rest */
 
 /* human resources topic */
 
