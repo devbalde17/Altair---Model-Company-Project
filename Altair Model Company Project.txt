@@ -39,13 +39,13 @@ join orders as o on o.ordernumber=orderNumber;
 
 /* human resources topic */
 
-SELECT month(p.paymentdate), concat(e.firstName, ' ', e.lastname) as full_employee_name, sum(p.amount) as turnover
+SELECT monthname(p.paymentdate), concat(e.firstName, ' ', e.lastname) as full_employee_name, sum(p.amount) as turnover
 FROM customers c
     JOIN payments p
 		ON c.customernumber = p.customernumber
 	Join employees e
 		ON c.salesRepEmployeeNumber = e.employeeNumber
-    GROUP BY month(p.paymentdate), c.salesRepEmployeeNumber
-    ORDER BY month(p.paymentdate) Desc, sum(p.amount) desc
+    GROUP BY monthname(p.paymentdate), c.salesRepEmployeeNumber
+    ORDER BY monthname(p.paymentdate) Desc, sum(p.amount) desc
     limit 2;
    
