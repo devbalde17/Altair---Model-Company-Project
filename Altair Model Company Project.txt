@@ -23,19 +23,18 @@ FROM mytable
 // starts here //
 
 
-// works//
-select od.quantityordered, p.productline
-from products p 
-join orderdetails od on od.ordernumber=ordernumber;
+Sales topic:
 
-*Shows the results to the field productline on the table products joined by the field on quantityordered from the orderdetails table*
-
-// in progress //
-
-select od.quantityordered, p.productline, o.orderdate
-from products p 
-join orderdetails od on od.ordernumber=ordernumber
-join orders as o on o.ordernumber=orderNumber;
+SELECT Month(o.orderdate), p.productLine, sum(od.quantityOrdered)  /*  selects the month, category and total quantity ordered columns */
+FROM orderdetails od /* from orderdetails table as main table */
+    JOIN products p  /* joining with product table as foreign */
+      ON od.productcode = p.productcode /* columns in common between both tables */
+	JOIN orders o
+      ON od.ordernumber = o.ordernumber
+    GROUP BY Month(o.orderdate), p.productLine /* grouping by month and category */
+    ORDER BY month(o.orderdate) asc, sum(od.quantityOrdered) DESC; /* ordering the results to show up by each month from higher to lowest in quantity */
+    
+    /* i think we are missing subquery's throught the project, we now need to tell SQL to compare with previous year */
 
 /* human resources topic */
 
