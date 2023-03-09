@@ -25,7 +25,7 @@ FROM mytable
 
 Sales topic:
 
-SELECT Month(o.orderdate), p.productLine, sum(od.quantityOrdered)  /*  selects the month, category and total quantity ordered columns */
+SELECT Month(o.orderdate), p.productLine, sum(od.quantityOrdered) as total_ordered  /*  selects the month, category and total quantity ordered columns */
 FROM orderdetails od /* from orderdetails table as main table */
     JOIN products p  /* joining with product table as foreign */
       ON od.productcode = p.productcode /* columns in common between both tables */
