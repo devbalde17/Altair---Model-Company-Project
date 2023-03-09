@@ -23,7 +23,7 @@ FROM mytable
 // starts here //
 
 
-Sales topic:
+/*Sales topic:*/
 
 SELECT Month(o.orderdate), p.productLine, sum(od.quantityOrdered) as total_ordered  /*  selects the month, category and total quantity ordered columns */
 FROM orderdetails od /* from orderdetails table as main table */
@@ -35,6 +35,23 @@ FROM orderdetails od /* from orderdetails table as main table */
     ORDER BY month(o.orderdate) asc, sum(od.quantityOrdered) DESC; /* ordering the results to show up by each month from higher to lowest in quantity */
     
     /* i think we are missing subquery's throught the project, we now need to tell SQL to compare with previous year */
+    
+    
+*/Financial Topic
+
+-monthly turnover by country*/
+
+
+SELECT month(p.paymentdate), sum(p.amount) as turnover, c.country
+FROM customers c
+    JOIN payments p
+		ON c.customernumber = p.customernumber
+	Join employees e
+		ON c.salesRepEmployeeNumber = e.employeeNumber
+    GROUP BY month(p.paymentdate), c.country
+    ORDER BY month(p.paymentdate), c.country asc;
+    
+    /*missing the rest of the question*/
 
 /* human resources topic */
 
