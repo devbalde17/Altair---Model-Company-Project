@@ -53,14 +53,14 @@ FROM orderdetails od
 -monthly turnover by country*/
 
 
-SELECT year(o.orderdate), Month(o.orderdate), sum(od.quantityordered) as order_turnover, c.country as customer_country
-FROM orderdetails od
-	Join orders o
-		ON o.orderNumber = od.ordernumber
-	JOIN customers c
-		ON o.customernumber = c.customernumber
-	GROUP BY year(o.orderdate), Month(o.orderdate), c.country
-	ORDER BY year(o.orderdate) desc, month(o.orderdate) desc, sum(od.quantityOrdered) DESC;
+SELECT sum(od.quantityordered) as order_turnover, c.country as customer_country
+FROM customers c
+	left Join orders o
+		ON c.customerNumber = o.customernumber
+	jOIN orderdetails od
+		ON od.ordernumber = o.ordernumber
+	GROUP BY c.country
+	ORDER BY c.country, sum(od.quantityOrdered) DESC;
     
     /*missing the rest of the question*/
     
