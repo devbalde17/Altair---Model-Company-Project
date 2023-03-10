@@ -48,6 +48,26 @@ FROM orderdetails od
     ORDER BY year(o.orderdate) asc, month(o.orderdate) asc;
     
     
+/*--this is another part of code which gives categories as columns
+  
+SELECT 
+YEAR(o.orderDate) as Sales_Year,
+MONTH(o.orderDate) as Sales_Month,
+SUM(case when p.productLine = 'Motorcycles' then od.quantityOrdered else 0 end) AS Motorcycles_Sales,
+SUM(case when p.productLine = 'Classic Cars' then od.quantityOrdered else 0 end) AS Classic_Cars_Sales,
+SUM(case when p.productLine = 'Trucks and Buses' then od.quantityOrdered else 0 end) AS Trucks_Buses_Sales,
+SUM(case when p.productLine = 'Vintage Cars' then od.quantityOrdered else 0 end) AS Vintage_Cars_Sales,
+SUM(case when p.productLine = 'Planes' then od.quantityOrdered else 0 end) AS Planes_Sales,
+SUM(case when p.productLine = 'Trains' then od.quantityOrdered else 0 end) AS Trains_Sales,
+SUM(case when p.productLine = 'Ships' then od.quantityOrdered else 0 end) AS Ships_Sales
+FROM orders o
+join orderdetails od on o.orderNumber = od.orderNumber
+join products p on p.productCode = od.productCode
+WHERE YEAR(o.orderDate)='2021'
+GROUP BY YEAR(o.orderDate), MONTH(o.orderDate)
+ORDER BY YEAR(o.orderDate), MONTH(o.orderDate);
+    
+    
 /*Financial Topic
 
 -monthly turnover by country*/
