@@ -70,7 +70,7 @@ ORDER BY YEAR(o.orderDate), MONTH(o.orderDate);
     
 /*Financial Topic
 
--monthly turnover by country*/
+Q1 -monthly turnover by country*/
 
 
 SELECT sum(od.quantityordered) as order_turnover, c.country as customer_country
@@ -83,6 +83,21 @@ FROM customers c
 	ORDER BY c.country, sum(od.quantityOrdered) DESC;
     
     /*missing the rest of the question*/
+    
+    
+   Q2- Orders not paid
+   
+   /*distinct to get 1 order per row, then sum the total per product of each order to get total order value*/
+Select distinct od.ordernumber, sum((od.quantityordered * od.priceeach)) as Order_Value
+from orderdetails od
+group by od.orderNumber;
+
+	/* total paid per customer */
+select distinct p.customernumber, sum(p.amount) as total_paid
+from payments p
+group by p.customernumber;
+
+
     
 /*Logistics topic*/
 
