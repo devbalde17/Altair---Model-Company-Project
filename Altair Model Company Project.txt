@@ -87,18 +87,15 @@ FROM customers c
     
    Q2- Orders not paid
    
-   /*distinct to get 1 order per row, then sum the total per product of each order to get total order value*/
-Select distinct od.ordernumber, sum((od.quantityordered * od.priceeach)) as Order_Value
-from orderdetails od
-group by od.orderNumber;
+   	/* orders not paid and theyr value */
+   	Select o.customernumber, o.orderdate, o.ordernumber, sum((od.quantityordered * od.priceeach)) as Order_Value
+from orders o
+join orderdetails od
+	on o.ordernumber = od.ordernumber
+group by o.ordernumber
+having sum((od.quantityordered * od.priceeach)) not in (select p.amount
+from payments p)/* this subquery will compare if there are values in the oder_value column in order table that are not in the ammount column in payments table and, therefore, are not being paid*/;
 
-	/* total paid per customer */
-select distinct p.customernumber, sum(p.amount) as total_paid
-from payments p
-group by p.customernumber;
-
-
-    
 /*Logistics topic*/
 
 SELECT p.productName, sum(od.quantityOrdered) as Total_ordered
