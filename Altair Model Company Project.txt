@@ -56,6 +56,44 @@ join orderdetails od on o.orderNumber = od.orderNumber
 join products p on p.productCode = od.productCode
 GROUP BY YEAR(o.orderDate), MONTH(o.orderDate)
 ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)) as x;
+
+
+just in case we need to use the rate of change in sql
+select f.year, f.month, 
+	f.Motorcycles_Sales1,
+	Motorcycles_Sales_PY,
+    (f.Motorcycles_Sales1 / Motorcycles_Sales_PY)
+from (select sales_year as year, 
+sales_month as month, 
+x.Motorcycles_Sales as Motorcycles_Sales1 , 
+Lag(Motorcycles_Sales, 12) over(order by x.Sales_Year, x.Sales_Month) AS Motorcycles_Sales_PY,
+x.classic_cars_sales,
+Lag(Classic_Cars_Sales, 12) over(order by x.Sales_Year, x.Sales_Month) AS Ccs_PreviousYear,
+x.Trucks_Buses_Sales,
+Lag(Trucks_Buses_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Trucks_Buses_Sales_PreviousYear,
+x.Vintage_Cars_Sales,
+Lag(Vintage_Cars_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Vintage_Cars_Sales_PreviousYear,
+x.Planes_Sales,
+Lag(Planes_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Planes_Sales_PreviousYear,
+x.Trains_Sales,
+Lag(Trains_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Trains_PreviousYear,
+x.Ships_Sales,
+Lag(Ships_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Ships_PreviousYear
+from (SELECT 
+YEAR(o.orderDate) as Sales_Year,
+MONTH(o.orderDate) as Sales_Month,
+SUM(case when p.productLine = 'Motorcycles' then od.quantityOrdered else 0 end) AS Motorcycles_Sales,
+SUM(case when p.productLine = 'Classic Cars' then od.quantityOrdered else 0 end) AS Classic_Cars_Sales,
+SUM(case when p.productLine = 'Trucks and Buses' then od.quantityOrdered else 0 end) AS Trucks_Buses_Sales,
+SUM(case when p.productLine = 'Vintage Cars' then od.quantityOrdered else 0 end) AS Vintage_Cars_Sales,
+SUM(case when p.productLine = 'Planes' then od.quantityOrdered else 0 end) AS Planes_Sales,
+SUM(case when p.productLine = 'Trains' then od.quantityOrdered else 0 end) AS Trains_Sales,
+SUM(case when p.productLine = 'Ships' then od.quantityOrdered else 0 end) AS Ships_Sales
+FROM orders o
+join orderdetails od on o.orderNumber = od.orderNumber
+join products p on p.productCode = od.productCode
+GROUP BY YEAR(o.orderDate), MONTH(o.orderDate)
+ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)) as x) as f
     
     
 /*Financial Topic
