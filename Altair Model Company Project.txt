@@ -25,32 +25,23 @@ FROM mytable
 
 /*Sales topic:*/
 
-SELECT year(o.orderdate), Month(o.orderdate), p.productLine, sum(od.quantityOrdered) as total_ordered
-FROM orderdetails od 
-    JOIN products p  
-      ON od.productcode = p.productcode 
-	JOIN orders o
-      ON od.ordernumber = o.ordernumber
-    GROUP BY year(o.orderdate), Month(o.orderdate), p.productLine 
-    ORDER BY year(o.orderdate) asc, month(o.orderdate) asc, sum(od.quantityOrdered) DESC;
-    
-    
-    not finished
-    
-    SELECT year(orderdate), Month(o.orderdate), p.productLine, sum(od.quantityOrdered),
-LAG(sum(od.quantityOrdered)) over (order by year(orderdate), month(orderdate))
-FROM orderdetails od 
-    left JOIN products p  
-      ON od.productcode = p.productcode 
-	left JOIN orders o
-      ON od.ordernumber = o.ordernumber
-    GROUP BY year(o.orderdate), Month(o.orderdate), p.productLine
-    ORDER BY year(o.orderdate) asc, month(o.orderdate) asc;
-    
-    
-/*--this is another part of code which gives categories as columns
-  
-SELECT 
+select sales_year, 
+sales_month, 
+x.Motorcycles_Sales, 
+Lag(Motorcycles_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Motorcycles_Sales_PY,
+x.Classic_Cars_Sales,
+Lag(Classic_Cars_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Ccs_PreviousYear,
+x.Trucks_Buses_Sales,
+Lag(Trucks_Buses_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Trucks_Buses_Sales_PreviousYear,
+x.Vintage_Cars_Sales,
+Lag(Vintage_Cars_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Vintage_Cars_Sales_PreviousYear,
+x.Planes_Sales,
+Lag(Planes_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Planes_Sales_PreviousYear,
+x.Trains_Sales,
+Lag(Trains_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Trains_PreviousYear,
+x.Ships_Sales,
+Lag(Ships_Sales, 12) over(order by x.Sales_Year, x.Sales_Month)AS Ships_PreviousYear
+from (SELECT 
 YEAR(o.orderDate) as Sales_Year,
 MONTH(o.orderDate) as Sales_Month,
 SUM(case when p.productLine = 'Motorcycles' then od.quantityOrdered else 0 end) AS Motorcycles_Sales,
@@ -63,9 +54,8 @@ SUM(case when p.productLine = 'Ships' then od.quantityOrdered else 0 end) AS Shi
 FROM orders o
 join orderdetails od on o.orderNumber = od.orderNumber
 join products p on p.productCode = od.productCode
-WHERE YEAR(o.orderDate)='2021'
 GROUP BY YEAR(o.orderDate), MONTH(o.orderDate)
-ORDER BY YEAR(o.orderDate), MONTH(o.orderDate);
+ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)) as x;
     
     
 /*Financial Topic
