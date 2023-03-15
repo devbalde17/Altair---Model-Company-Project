@@ -156,3 +156,48 @@ ON od.orderNumber=o.orderNumber
 GROUP BY year(o.OrderDate), month(o.OrderDate), sellers
 Order by year(o.OrderDate), month(o.OrderDate)) as x
 where x.seq <=2;
+
+# Finance Q1
+with my_table as (
+select p.productLine as category, 
+	 sum(od.quantityOrdered) as quantity,
+     year(o.orderDate) as Year,
+      month(o.orderDate) as Month,
+     country
+from products as p
+join orderdetails as od on p.productCode= od.productCode
+join orders as o on o.orderNumber= od.orderNumber
+join customers as c on o.customerNumber= c.customerNumber 
+group by category, 
+     year, month,
+     country
+order by month)
+
+select category, quantity , 
+     year, month,
+     country
+from my_table
+
+where month in (1, 2)
+
+order by month, country;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
