@@ -157,30 +157,32 @@ GROUP BY year(o.OrderDate), month(o.OrderDate), sellers
 Order by year(o.OrderDate), month(o.OrderDate)) as x
 where x.seq <=2;
 
-# Finance Q1
-with my_table as (
-select p.productLine as category, 
-	 sum(od.quantityOrdered) as quantity,
-     year(o.orderDate) as Year,
-      month(o.orderDate) as Month,
-     country
-from products as p
-join orderdetails as od on p.productCode= od.productCode
-join orders as o on o.orderNumber= od.orderNumber
-join customers as c on o.customerNumber= c.customerNumber 
-group by category, 
-     year, month,
-     country
-order by month)
 
-select category, quantity , 
-     year, month,
-     country
-from my_table
+/* REVISED FINANCE Q1 */
 
-where month in (1, 2)
+WITH my_table AS (
+    SELECT p.productLine AS category, 
+           SUM(od.quantityOrdered * od.priceEach) AS turnover,
+           YEAR(o.orderDate) AS Year,
+           MONTH(o.orderDate) AS Month,
+           country
+    FROM products AS p
+    JOIN orderdetails AS od ON p.productCode = od.productCode
+    JOIN orders AS o ON o.orderNumber = od.orderNumber
+    JOIN customers AS c ON o.customerNumber = c.customerNumber 
+    WHERE o.orderDate >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+    GROUP BY category, Year, Month, country
+    ORDER BY Month, country
+)
 
-order by month, country;
+SELECT mt.category, 
+       mt.turnover, 
+       mt.Year, 
+       mt.Month,
+       mt.country
+FROM my_table AS mt
+ORDER BY mt.Month, mt.country;
+
 
 
 
